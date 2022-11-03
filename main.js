@@ -1,50 +1,105 @@
-var names_of_people = [];
-    
-function submit()
-{
-    var GuestName = document.getElementById("name1").value;
-	names_of_people.push(GuestName);
-	// use the push function as - names_of_people.push(GuestName);
-	console.log(GuestName);    
-    console.log(names_of_people);
-    var lenght_of_name = names_of_people.length;
-    console.log(lenght_of_name);
-	document.getElementById("display_name").innerHTML=names_of_people.toString();
-   }
+canvas = document.getElementById('myCanvas');
+ctx = canvas.getContext("2d");
 
+nasa_mars_images_array = ["mars.jpg","mars2.jpeg", "mars3.jpg","mars4.jpg"];
 
+random_number = Math.floor(Math.random() * 4);
+console.log(random_number);
+rover_width = 100;
+rover_height = 90;
 
-function show()
-{
-	var i= names_of_people.join("<br>");
-	console.log(names_of_people);
-	document.getElementById("p1").innerHTML=i.toString();
-	document.getElementById("sort_button").style.display="block";
-	
+background_image = nasa_mars_images_array[random_number];
+console.log("background_image = " + background_image);
+rover_image = "rover.png";
+
+rover_x = 10;
+rover_y = 10;
+
+function add() {
+	background_imgTag = new Image(); //defining a variable with a new image
+	background_imgTag.onload = uploadBackground; // setting a function, onloading this variable
+	background_imgTag.src = background_image;   // load image
+
+	rover_imgTag = new Image(); //defining a variable with a new image
+	rover_imgTag.onload = uploadrover; // setting a function, onloading this variable
+	rover_imgTag.src = rover_image;   // load image
+}
+
+function uploadBackground() {
+	ctx.drawImage(background_imgTag, 0, 0, canvas.width, canvas.height);
+}
+
+function uploadrover() {
+	ctx.drawImage(rover_imgTag, rover_x, rover_y, rover_width, rover_height);
 }
 
 
-function sorting()
-	{
-		names_of_people.sort()           // add the sort function here
-		// .sort();
-		var i= names_of_people.join("<br>");
-		console.log(names_of_people);		
-		document.getElementById("sorted").innerHTML=i.toString();
-		}
+window.addEventListener("keydown", my_keydown);
 
-
-function searching()
+function my_keydown(e)
 {
-	var s= document.getElementById("s1").value;
-	var found=0;
-	var j;
-	for(j=0; j<names_of_people.length; j++)
+	keyPressed = e.keyCode;
+	console.log(keyPressed);
+		if(keyPressed == '38')
 		{
-			if(s==names_of_people[j]){
-				found=found+1;
-			}	
+			up();
+			console.log("up");
 		}
-	document.getElementById("p2").innerHTML="name found "+found+" time/s";
-	console.log("found name "+found+" time/s");
+		if(keyPressed == '40')
+		{
+			down();
+			console.log("down");
+		}
+		if(keyPressed == '37')
+		{
+			left();
+			console.log("left");
+		}
+		if(keyPressed == '39')
+		{
+			right();
+			console.log("right");
+		}
 }
+
+function up()
+{
+	if(rover_y >=0)
+	{
+		rover_y = rover_y - 10;
+		console.log("When up arrow is pressed,  x = " + rover_x + " | y = " +rover_y);
+		 uploadBackground();
+		 uploadrover();
+	}
+}
+function down()
+{
+	if(rover_y <=500)
+	{
+		rover_y =rover_y+ 10;
+		console.log("When down arrow is pressed,  x = " + rover_x + " | y = " +rover_y);
+		uploadBackground();
+		 uploadrover();
+	}
+}
+function left()
+{
+	if(rover_x >= 0)
+	{
+		rover_x =rover_x - 10;
+		console.log("When left arrow is pressed,  x = " + rover_x + " | y = " +rover_y);
+		uploadBackground();
+		 uploadrover();
+	}
+}
+function right()
+{
+	if(rover_x <= 700)
+	{
+		rover_x =rover_x + 10;
+		console.log("When right arrow is pressed,  x = " + rover_x + " | y = " +rover_y);
+		uploadBackground();
+		uploadrover();
+   }
+}
+	
